@@ -3055,7 +3055,6 @@ namespace MissionPlanner.Controls
 
                 // custom user items
                 graphicsObject.ResetTransform();
-                int height = this.Height - ((fontsize + 2) * 3) - fontoffset - fontsize - 8;
                 foreach (string key in CustomItems.Keys)
                 {
                     try
@@ -3063,40 +3062,33 @@ namespace MissionPlanner.Controls
                         Custom item = (Custom)CustomItems[key];
                         if (item.Item == null)
                             continue;
+                        Point pos = item.Position;
+                        string text;
                         if (item.Item.Name.Contains("lat") || item.Item.Name.Contains("lng"))
                         {
-                            drawstring(item.Header + item.GetValue.ToString("0.#######"), font,
-                                fontsize + 2, _whiteBrush, this.Width / 8, height);
+                            text = item.Header + item.GetValue.ToString("0.#######");
                         }
                         else if (item.Item.Name == "battery_usedmah")
                         {
-                            drawstring(item.Header + item.GetValue.ToString("0"), font, fontsize + 2,
-                                _whiteBrush, this.Width / 8, height);
+                            text = item.Header + item.GetValue.ToString("0");
                         }
                         else if (item.Item.Name == "timeInAir")
                         {
                             double stime = item.GetValue;
                             int hrs = (int)(stime / (60 * 60));
-                            //stime -= hrs * 60 * 60;
                             int mins = (int)(stime / (60)) % 60;
-                            //stime = mins * 60;
                             int secs = (int)(stime % 60);
-                            drawstring(
-                                item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" +
-                                secs.ToString("00"), font, fontsize + 2, _whiteBrush, this.Width / 8, height);
+                            text = item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" + secs.ToString("00");
                         }
                         else
                         {
-                            drawstring(item.Header + item.GetValue.ToString("0.##"), font, fontsize + 2,
-                                _whiteBrush, this.Width / 8, height);
+                            text = item.Header + item.GetValue.ToString("0.##");
                         }
-
-                        height -= fontsize + 5;
+                        drawstring(text, font, fontsize + 2, _whiteBrush, pos.X, pos.Y);
                     }
                     catch
                     {
                     }
-
                 }
 
 
