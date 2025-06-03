@@ -33,12 +33,12 @@ namespace CameraControl
 
         public override string Version
         {
-            get { return "0.10"; }
+            get { return "0.11"; }
         }
 
         public override string Author
         {
-            get { return "Michael Oborne"; }
+            get { return "Asi_Dess"; }
         }
 
         public override bool Init()
@@ -49,73 +49,73 @@ namespace CameraControl
         public override bool Loaded()
         {
             stream = new GStreamer();
-            var rootbut = new ToolStripMenuItem("Herelink Video");
+            var rootbut = new ToolStripMenuItem("Dess Video");
             //rootbut.Click += but_Click;
             ToolStripItemCollection col = Host.FDMenuHud.Items;
             col.Add(rootbut);
 
-            var but = new ToolStripMenuItem("Connect v1");
+            var but = new ToolStripMenuItem("Connect SiYi");
             but.Click += but3_Click;
             rootbut.DropDownItems.Add(but);
 
 
-            but = new ToolStripMenuItem("Set Video stream 1 v1");
-            but.Click += but1_Click;
-            rootbut.DropDownItems.Add(but);
+            /* but = new ToolStripMenuItem("Set Video stream 1 v1");
+             but.Click += but1_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Set Video stream 2 v1");
-            but.Click += but2_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Set Video stream 2 v1");
+             but.Click += but2_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Connect stream 1 v2");
-            but.Click += but7_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Connect stream 1 v2");
+             but.Click += but7_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Connect stream 2 v2");
-            but.Click += but8_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Connect stream 2 v2");
+             but.Click += but8_Click;
+             rootbut.DropDownItems.Add(but);
 
 
-            but = new ToolStripMenuItem("Connect air 1 v2");
-            but.Click += but5_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Connect air 1 v2");
+             but.Click += but5_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Connect air 2 v2");
-            but.Click += but6_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Connect air 2 v2");
+             but.Click += but6_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Reset Baud");
-            but.Click += but9_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Reset Baud");
+             but.Click += but9_Click;
+             rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Dump Info");
-            but.Click += but_Click;
-            rootbut.DropDownItems.Add(but);
+             but = new ToolStripMenuItem("Dump Info");
+             but.Click += but_Click;
+             rootbut.DropDownItems.Add(but);*/
 
-            but = new ToolStripMenuItem("Capture Start");
-            but.Click += (s, e) =>
-            {
-                var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
-                    a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
+            /*  but = new ToolStripMenuItem("Capture Start");
+              but.Click += (s, e) =>
+              {
+                  var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
+                      a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
 
-                if (mav == null)
-                    return;
+                  if (mav == null)
+                      return;
 
-                mav.parent.doCommand(mav.sysid, mav.compid, MAV_CMD_VIDEO_START_CAPTURE, 0, 0, 0, 0, 0, 0, 0);
-            };
-            rootbut.DropDownItems.Add(but);
+                  mav.parent.doCommand(mav.sysid, mav.compid, MAV_CMD_VIDEO_START_CAPTURE, 0, 0, 0, 0, 0, 0, 0);
+              };
+              rootbut.DropDownItems.Add(but);
 
-            but = new ToolStripMenuItem("Capture Stop");
-            but.Click += (s, e) =>
-            {
-                var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
-                    a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
+              but = new ToolStripMenuItem("Capture Stop");
+              but.Click += (s, e) =>
+              {
+                  var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
+                      a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
 
-                if (mav == null)
-                    return;
+                  if (mav == null)
+                      return;
 
-                mav.parent.doCommand(mav.sysid, mav.compid, MAV_CMD_VIDEO_STOP_CAPTURE, 0, 0, 0, 0, 0, 0, 0);
-            };
+                  mav.parent.doCommand(mav.sysid, mav.compid, MAV_CMD_VIDEO_STOP_CAPTURE, 0, 0, 0, 0, 0, 0, 0);
+              };*/
             rootbut.DropDownItems.Add(but);
 
             return true;
@@ -197,51 +197,51 @@ namespace CameraControl
         private const MAVLink.MAV_CMD MAV_CMD_VIDEO_START_CAPTURE = (MAVLink.MAV_CMD)2500;
         private const MAVLink.MAV_CMD MAV_CMD_VIDEO_STOP_CAPTURE = (MAVLink.MAV_CMD)2501;
 
-        private void but2_Click(object sender, EventArgs e)
-        {
-            var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
-                a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
+        /*  private void but2_Click(object sender, EventArgs e)
+         {
+             var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
+                 a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
 
-            if (mav == null)
-                return;
+             if (mav == null)
+                 return;
 
-            const int MAV_CMD_VIDEO_STOP_STREAMING = 2503;
+             const int MAV_CMD_VIDEO_STOP_STREAMING = 2503;
 
-            mav.parent.doCommand(mav.sysid, mav.compid, (MAVLink.MAV_CMD)MAV_CMD_VIDEO_STOP_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
+             mav.parent.doCommand(mav.sysid, mav.compid, (MAVLink.MAV_CMD)MAV_CMD_VIDEO_STOP_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
 
-            mav.parent.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.VIDEO_START_STREAMING, 1, 0, 0, 0, 0, 0, 0, true);
-        }
+             mav.parent.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.VIDEO_START_STREAMING, 1, 0, 0, 0, 0, 0, 0, true);
+         }
 
-        private void but1_Click(object sender, EventArgs e)
-        {
-            var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
-                a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
+         private void but1_Click(object sender, EventArgs e)
+         {
+             var mav = Host.comPort.MAVlist.FirstOrDefault(a =>
+                 a.compid == (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA);
 
-            if (mav == null)
-                return;
+             if (mav == null)
+                 return;
 
-            const int MAV_CMD_VIDEO_STOP_STREAMING = 2503;
+             const int MAV_CMD_VIDEO_STOP_STREAMING = 2503;
 
-            mav.parent.doCommand(mav.sysid, mav.compid, (MAVLink.MAV_CMD)MAV_CMD_VIDEO_STOP_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
+             mav.parent.doCommand(mav.sysid, mav.compid, (MAVLink.MAV_CMD)MAV_CMD_VIDEO_STOP_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
 
-            mav.parent.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.VIDEO_START_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
-        }
+             mav.parent.doCommand(mav.sysid, mav.compid, MAVLink.MAV_CMD.VIDEO_START_STREAMING, 0, 0, 0, 0, 0, 0, 0, true);
+         } */
 
         private void but3_Click(object sender, EventArgs e)
         {
             stream.Stop();
 
-            string ipaddr = "192.168.43.1";
+            string ipaddr = "192.168.131.96";
 
             if (Settings.Instance["herelinkip"] != null)
                 ipaddr = Settings.Instance["herelinkip"].ToString();
 
-            InputBox.Show("herelink ip", "Enter herelink ip address", ref ipaddr);
+            InputBox.Show("Dess ip", "Enter Dess ip address", ref ipaddr);
 
             Settings.Instance["herelinkip"] = ipaddr;
 
             string url = String.Format(
-                "rtspsrc location=rtsp://{0}:8554/fpv_stream latency=1 udp-reconnect=1 timeout=0 do-retransmission=false ! application/x-rtp ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink",
+                "rtspsrc location=rtsp://192.168.131.96:8554/main.264 protocols=udp latency=0 buffer-mode=auto ! decodebin ! videoconvert ! autovideosink sync=false",
                 ipaddr);
 
             GStreamer.GstLaunch = GStreamer.LookForGstreamer();
@@ -259,37 +259,37 @@ namespace CameraControl
             stream.Start(url);
         }
 
-        private void but4_Click(object sender, EventArgs e)
-        {
-            stream.Stop();
+        /*  private void but4_Click(object sender, EventArgs e)
+         {
+             stream.Stop();
 
-            string ipaddr = "192.168.43.1";
+             string ipaddr = "192.168.43.1";
 
-            if (Settings.Instance["herelinkip"] != null)
-                ipaddr = Settings.Instance["herelinkip"].ToString();
+             if (Settings.Instance["herelinkip"] != null)
+                 ipaddr = Settings.Instance["herelinkip"].ToString();
 
-            InputBox.Show("herelink ip", "Enter herelink ip address", ref ipaddr);
+             InputBox.Show("herelink ip", "Enter herelink ip address", ref ipaddr);
 
-            Settings.Instance["herelinkip"] = ipaddr;
+             Settings.Instance["herelinkip"] = ipaddr;
 
-            string url = String.Format(
-                "rtspsrc location=rtsp://{0}:8554/fpv_stream latency=1 udp-reconnect=1 timeout=0 do-retransmission=false ! application/x-rtp ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink",
-                ipaddr);
+             string url = String.Format(
+                 "rtspsrc location=rtsp://{0}:8554/fpv_stream latency=1 udp-reconnect=1 timeout=0 do-retransmission=false ! application/x-rtp ! decodebin3 ! queue max-size-buffers=1 leaky=2 ! videoconvert ! video/x-raw,format=BGRx ! appsink name=outsink",
+                 ipaddr);
 
-            GStreamer.GstLaunch = GStreamer.LookForGstreamer();
+             GStreamer.GstLaunch = GStreamer.LookForGstreamer();
 
-            if (!GStreamer.GstLaunchExists)
-            {
-                GStreamerUI.DownloadGStreamer();
+             if (!GStreamer.GstLaunchExists)
+             {
+                 GStreamerUI.DownloadGStreamer();
 
-                if (!GStreamer.GstLaunchExists)
-                {
-                    return;
-                }
-            }
+                 if (!GStreamer.GstLaunchExists)
+                 {
+                     return;
+                 }
+             }
 
-            stream.Start(url);
-        }
+             stream.Start(url);
+         } */
 
         private void but5_Click(object sender, EventArgs e)
         {
