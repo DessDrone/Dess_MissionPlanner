@@ -162,10 +162,6 @@ namespace MissionPlanner.Controls
 
         public bool Russian { get; set; }
 
-        // Add properties for custom item offset
-        public int CustomItemOffsetX { get; set; } = 0;
-        public int CustomItemOffsetY { get; set; } = 0;
-
         private class character
         {
             public GraphicsPath pth;
@@ -1014,12 +1010,10 @@ namespace MissionPlanner.Controls
                     try
                     {
                         _bgimage = (Image)value;
-                        bgon = (_bgimage == null);
                     }
                     catch
                     {
                         _bgimage = null;
-                        bgon = true;
                     }
 
                     this.Invalidate();
@@ -3072,12 +3066,12 @@ namespace MissionPlanner.Controls
                         if (item.Item.Name.Contains("lat") || item.Item.Name.Contains("lng"))
                         {
                             drawstring(item.Header + item.GetValue.ToString("0.#######"), font,
-                                fontsize + 2, _whiteBrush, item.Position.X, item.Position.Y);
+                                fontsize + 2, _whiteBrush, this.Width / 8, height);
                         }
                         else if (item.Item.Name == "battery_usedmah")
                         {
                             drawstring(item.Header + item.GetValue.ToString("0"), font, fontsize + 2,
-                                _whiteBrush, item.Position.X, item.Position.Y);
+                                _whiteBrush, this.Width / 8, height);
                         }
                         else if (item.Item.Name == "timeInAir")
                         {
@@ -3089,12 +3083,12 @@ namespace MissionPlanner.Controls
                             int secs = (int)(stime % 60);
                             drawstring(
                                 item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" +
-                                secs.ToString("00"), font, fontsize + 2, _whiteBrush, item.Position.X, item.Position.Y);
+                                secs.ToString("00"), font, fontsize + 2, _whiteBrush, this.Width / 8, height);
                         }
                         else
                         {
                             drawstring(item.Header + item.GetValue.ToString("0.##"), font, fontsize + 2,
-                                _whiteBrush, item.Position.X, item.Position.Y);
+                                _whiteBrush, this.Width / 8, height);
                         }
 
                         height -= fontsize + 5;
@@ -3325,51 +3319,7 @@ namespace MissionPlanner.Controls
                     return;
                 }
 
-                // custom user items
-                graphicsObject.ResetTransform();
-                foreach (string key in CustomItems.Keys)
-                {
-                    try
-                    {
-                        Custom item = (Custom)CustomItems[key];
-                        if (item.Item == null)
-                            continue;
-
-                        int x = item.Position.X + CustomItemOffsetX;
-                        int y = item.Position.Y + CustomItemOffsetY;
-
-                        if (item.Item.Name.Contains("lat") || item.Item.Name.Contains("lng"))
-                        {
-                            drawstring(item.Header + item.GetValue.ToString("0.#######"), font,
-                                fontsize + 2, _whiteBrush, x, y);
-                        }
-                        else if (item.Item.Name == "battery_usedmah")
-                        {
-                            drawstring(item.Header + item.GetValue.ToString("0"), font, fontsize + 2,
-                                _whiteBrush, x, y);
-                        }
-                        else if (item.Item.Name == "timeInAir")
-                        {
-                            double stime = item.GetValue;
-                            int hrs = (int)(stime / (60 * 60));
-                            int mins = (int)(stime / (60)) % 60;
-                            int secs = (int)(stime % 60);
-                            drawstring(
-                                item.Header + hrs.ToString("00") + ":" + mins.ToString("00") + ":" +
-                                secs.ToString("00"), font, fontsize + 2, _whiteBrush, x, y);
-                        }
-                        else
-                        {
-                            drawstring(item.Header + item.GetValue.ToString("0.##"), font, fontsize + 2,
-                                _whiteBrush, x, y);
-                        }
-                    }
-                    catch
-                    {
-                    }
-                }
-
-                graphicsObject.TranslateTransform(this.Width / 2, this.Height / 2);
+                //                Console.WriteLine("HUD 1 " + (DateTime.Now - starttime).TotalMilliseconds + " " + DateTime.Now.Millisecond);
 
                 lock (streamlock)
                 {

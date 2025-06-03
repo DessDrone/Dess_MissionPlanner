@@ -931,9 +931,6 @@ namespace MissionPlanner.GCSViews
         {
             setupPropertyInfo(ref cust.Item, name, MainV2.comPort.MAV.cs);
 
-            // Initialize position with default values
-            cust.Position = new Point(hud1.Width / 8, hud1.Height - 30 - 10 - 8);
-
             hud1.CustomItems[name] = cust;
 
             hud1.Invalidate();
