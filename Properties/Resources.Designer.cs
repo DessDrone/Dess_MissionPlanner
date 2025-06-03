@@ -27,6 +27,15 @@ namespace MissionPlanner.Properties {
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
+        #region HUD Controls
+        private Controls.HUD hud1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripHud;
+        // ... other HUD-related controls
+        #endregion
+
+        #region Map Controls
+        private System.Windows.Forms.TableLayoutPanel tableMap;
+        private Controls.myGMAP gMapControl1;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
@@ -1807,3 +1816,4 @@ namespace MissionPlanner.Properties {
         }
     }
 }
+#endregion
