@@ -2402,6 +2402,27 @@ namespace MissionPlanner.GCSViews
 
                 cust.Header = prefix;
 
+                // Load position if it exists
+                string posStr = Settings.Instance["hud1_useritempos_" + checkbox.Name];
+                log.Info($"Loading position for item {checkbox.Name}: {posStr}");
+                if (!string.IsNullOrEmpty(posStr) && posStr.Contains(","))
+                {
+                    var parts = posStr.Split(',');
+                    if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                    {
+                        cust.Position = new Point(x, y);
+                        log.Info($"Set position to {x},{y}");
+                    }
+                }
+                else
+                {
+                    // Set a default position that's visible on screen
+                    cust.Position = new Point(50, 50);
+                    log.Info($"Set default position to 50,50");
+                    Settings.Instance["hud1_useritempos_" + checkbox.Name] = "50,50";
+                    Settings.Instance.Save();
+                }
+
                 addHudUserItem(ref cust, checkbox.Name);
             }
             else
@@ -2409,9 +2430,16 @@ namespace MissionPlanner.GCSViews
                 checkbox.BackColor = Color.Transparent;
 
                 if (hud1.CustomItems.ContainsKey(checkbox.Name))
+                {
+                    // Save the position before removing
+                    var cust = (HUD.Custom)hud1.CustomItems[checkbox.Name];
+                    Settings.Instance["hud1_useritempos_" + checkbox.Name] = $"{cust.Position.X},{cust.Position.Y}";
                     hud1.CustomItems.Remove(checkbox.Name);
+                }
 
                 Settings.Instance.Remove("hud1_useritem_" + checkbox.Name);
+                Settings.Instance.Remove("hud1_useritempos_" + checkbox.Name);
+                Settings.Instance.Save(); // Save settings after removing item
                 hud1.Invalidate();
             }
         }

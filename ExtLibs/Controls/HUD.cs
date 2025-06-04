@@ -272,6 +272,31 @@ namespace MissionPlanner.Controls
 
             graphicsObject = this;
             graphicsObjectGDIP = new GdiGraphics(Graphics.FromImage(objBitmap));
+
+            // Load saved positions for custom items
+            foreach (string key in Settings.Instance.Keys)
+            {
+                if (key.StartsWith("hud1_useritempos_"))
+                {
+                    string itemName = key.Substring("hud1_useritempos_".Length);
+                    string posStr = Settings.Instance[key];
+                    log.Info($"Loading saved position for {itemName}: {posStr}");
+                    if (!string.IsNullOrEmpty(posStr) && posStr.Contains(","))
+                    {
+                        var parts = posStr.Split(',');
+                        if (parts.Length == 2 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y))
+                        {
+                            if (CustomItems.ContainsKey(itemName))
+                            {
+                                Custom item = (Custom)CustomItems[itemName];
+                                item.Position = new Point(x, y);
+                                CustomItems[itemName] = item;
+                                log.Info($"Set position for {itemName} to {x},{y}");
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         protected override void Dispose(bool disposing)
@@ -1055,6 +1080,7 @@ namespace MissionPlanner.Controls
                 Rectangle hitArea = new Rectangle(item.Position.X - 5, item.Position.Y - 5, 100, 20);
                 if (hitArea.Contains(e.Location))
                 {
+                    log.Info($"Starting drag of item {key} at position {item.Position}");
                     dragStartPoint = e.Location;
                     draggedItemKey = key;
                     break;
@@ -1065,6 +1091,17 @@ namespace MissionPlanner.Controls
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            if (draggedItemKey != null)
+            {
+                // Save the new position to settings
+                if (CustomItems.ContainsKey(draggedItemKey))
+                {
+                    Custom item = (Custom)CustomItems[draggedItemKey];
+                    string posStr = $"{item.Position.X},{item.Position.Y}";
+                    log.Info($"Saving position for item {draggedItemKey} to {posStr}");
+                    Settings.Instance[$"hud1_useritempos_{draggedItemKey}"] = posStr;
+                }
+            }
             dragStartPoint = null;
             draggedItemKey = null;
         }
@@ -1089,10 +1126,12 @@ namespace MissionPlanner.Controls
             {
                 // Update the position of the dragged item
                 Custom item = (Custom)CustomItems[draggedItemKey];
-                item.Position = new Point(
+                Point newPos = new Point(
                     item.Position.X + (e.X - dragStartPoint.Value.X),
                     item.Position.Y + (e.Y - dragStartPoint.Value.Y)
                 );
+                log.Info($"Moving item {draggedItemKey} from {item.Position} to {newPos}");
+                item.Position = newPos;
                 CustomItems[draggedItemKey] = item;
                 dragStartPoint = e.Location;
                 this.Invalidate();
@@ -2001,7 +2040,7 @@ namespace MissionPlanner.Controls
 
                 try
                 {
-                    graphicsObject.Clear(Color.Transparent);
+                    graphicsObject.Clear(Color.Yellow);
                 }
                 catch
                 {
@@ -3165,7 +3204,7 @@ namespace MissionPlanner.Controls
                     if (displayicons)
                     {
                         var width = (fontsize + 8) * 3;
-                        vibehitzone = new Rectangle(this.Width - (width * 4) + width / 2 - 5, this.Height - (fontsize + 13), (fontsize + 8) * 3, fontsize + 8);
+                        vibehitzone = new Rectangle(this.Width /2 + width / 2 + 5, this.Height - (fontsize + 13), (fontsize + 8) * 3, fontsize + 8);
 
                     }
                     else
@@ -3221,7 +3260,17 @@ namespace MissionPlanner.Controls
                     if (displayicons)
                     {
                         var width = (fontsize + 8) * 3;
-                        ekfhitzone = new Rectangle(this.Width - width * 5 + width / 2 - 10, this.Height - (fontsize + 13), (fontsize + 8) * 3, fontsize + 8);
+                        //ekfhitzone = new Rectangle(this.Width - width * 5 + width / 2 - 10, this.Height - (fontsize + 13), (fontsize + 8) * 3, fontsize + 8);
+                        //// Replace this line in doPaint():
+                        //ekfhitzone = new Rectangle(this.Width - width * 5 + width / 2 - 10, this.Height - (fontsize + 13), (fontsize + 8) * 3, fontsize + 8);
+
+                        // With this, which centers the ekfhitzone horizontally:
+                        ekfhitzone = new Rectangle(
+                            (this.Width / 2) - ((fontsize + 8) * 3 / 2), // center horizontally
+                            this.Height - (fontsize + 13),
+                            (fontsize + 8) * 3,
+                            fontsize + 8
+                        );
                     }
                     else
                     {
@@ -3271,7 +3320,7 @@ namespace MissionPlanner.Controls
                     if (displayicons)
                     {
                         var width = (fontsize + 8) * 3;
-                        prearmhitzone = new Rectangle(this.Width - width * 5 + width / 2 - 7, this.Height - (fontsize * 2 + 25), width * 2, fontsize + 8);
+                        prearmhitzone = new Rectangle((this.Width / 2) - ((fontsize + 8) * 3 / 2), this.Height - (fontsize * 2 + 25), width * 2, fontsize + 8);
                     }
                     else
                     {
